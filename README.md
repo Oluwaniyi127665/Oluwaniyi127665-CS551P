@@ -232,7 +232,8 @@ This project currently uses SQLite. Render’s documentation says web services u
 
 - Local application: working
 - Render configuration: prepared
-- Live public Render URL: add here after deployment
+- GitHub repository: https://github.com/Oluwaniyi127665/cs551p
+- Live public Render URL: pending deployment
 
 Example placeholder:
 
