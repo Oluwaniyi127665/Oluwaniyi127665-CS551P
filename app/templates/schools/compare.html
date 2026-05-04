@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Compare Schools | UK Schools Explorer{% endblock %}
+
+{% block content %}
+<h2>Compare Schools</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Field</th>
+            <th>{{ first_school.name }}</th>
+            <th>{{ second_school.name }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Authority</td>
+            <td>{{ first_school.authority.name }}</td>
+            <td>{{ second_school.authority.name }}</td>
+        </tr>
+        <tr>
+            <td>Type</td>
+            <td>{{ first_school.school_type_label }}</td>
+            <td>{{ second_school.school_type_label }}</td>
+        </tr>
+        <tr>
+            <td>Status</td>
+            <td>{{ first_school.status_label }}</td>
+            <td>{{ second_school.status_label }}</td>
+        </tr>
+        <tr>
+            <td>Capacity</td>
+            <td>{{ first_school.capacity if first_school.capacity is not none else "Unknown" }}</td>
+            <td>{{ second_school.capacity if second_school.capacity is not none else "Unknown" }}</td>
+        </tr>
+        <tr>
+            <td>District code</td>
+            <td>{{ first_school.district_code or "Unknown" }}</td>
+            <td>{{ second_school.district_code or "Unknown" }}</td>
+        </tr>
+    </tbody>
+</table>
+{% endblock %}

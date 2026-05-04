@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Schools | UK Schools Explorer{% endblock %}
+
+{% block content %}
+<h2>Schools</h2>
+<p>Showing up to the first 100 matching schools from the current dataset subset.</p>
+
+<form method="get" class="filter-form">
+    <div class="filter-field">
+        <label for="name">School name</label>
+        <input id="name" name="name" type="text" value="{{ active_filters.name }}">
+    </div>
+
+    <div class="filter-field">
+        <label for="authority_id">Authority</label>
+        <select id="authority_id" name="authority_id">
+            <option value="">All authorities</option>
+            {% for authority in authorities %}
+            <option value="{{ authority.id }}" {% if active_filters.authority_id == authority.id %}selected{% endif %}>
+                {{ authority.name }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="filter-field">
+        <label for="school_type">School type</label>
+        <select id="school_type" name="school_type">
+            <option value="">All school types</option>
+            {% for code, label in filter_options.school_types %}
+            <option value="{{ code }}" {% if active_filters.school_type == code %}selected{% endif %}>
+                {{ label }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="filter-field">
+        <label for="status">Status</label>
+        <select id="status" name="status">
+            <option value="">All statuses</option>
+            {% for code, label in filter_options.statuses %}
+            <option value="{{ code }}" {% if active_filters.status == code %}selected{% endif %}>
+                {{ label }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="filter-actions">
+        <button type="submit">Apply filters</button>
+    </div>
+</form>
+
+<p>{{ total_matches }} schools matched the current filters. Showing the first {{ result_count }} results.</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Authority</th>
+            <th>District code</th>
+            <th>Type</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for school in schools %}
+        <tr>
+            <td><a href="{{ url_for('main.school_show', school_id=school.id) }}">{{ school.name }}</a></td>
+            <td><a href="{{ url_for('main.authority_show', authority_id=school.authority.id) }}">{{ school.authority.name }}</a></td>
+            <td>{{ school.district_code or "Unknown" }}</td>
+            <td>{{ school.school_type_label }}</td>
+            <td>{{ school.status_label }}</td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="5">No schools matched the current filters.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

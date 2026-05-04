@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}{{ school.name }} | UK Schools Explorer{% endblock %}
+
+{% block content %}
+<h2>{{ school.name }}</h2>
+
+<section class="card">
+    <p><strong>URN:</strong> {{ school.urn }}</p>
+    <p><strong>District code:</strong> {{ school.district_code or "Unknown" }}</p>
+    <p><strong>Authority:</strong> <a href="{{ url_for('main.authority_show', authority_id=school.authority.id) }}">{{ school.authority.name }}</a></p>
+    <p><strong>Type:</strong> {{ school.school_type_label }}</p>
+    <p><strong>Status:</strong> {{ school.status_label }}</p>
+    <p><strong>Capacity:</strong> {{ school.capacity if school.capacity is not none else "Unknown" }}</p>
+    <p><strong>Map point:</strong> {{ school.point or "Unknown" }}</p>
+    <p><strong>Website:</strong>
+        {% if school.website_url %}
+        <a href="{{ school.website_url }}">{{ school.website_url }}</a>
+        {% else %}
+        Unknown
+        {% endif %}
+    </p>
+</section>
+
+<section class="card">
+    <h3>Other schools in the same authority</h3>
+    <ul>
+        {% for related_school in similar_schools %}
+        <li><a href="{{ url_for('main.school_show', school_id=related_school.id) }}">{{ related_school.name }}</a></li>
+        {% else %}
+        <li>No related schools found yet.</li>
+        {% endfor %}
+    </ul>
+</section>
+{% endblock %}

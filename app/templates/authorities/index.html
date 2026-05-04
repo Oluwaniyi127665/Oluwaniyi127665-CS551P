@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Authorities | UK Schools Explorer{% endblock %}
+
+{% block content %}
+<h2>Local Authorities</h2>
+<p>
+    {% if include_empty %}
+    Showing all authorities, including those with no schools in the current loaded subset.
+    {% else %}
+    Showing authorities that have at least one linked school in the current loaded subset.
+    {% endif %}
+</p>
+<p class="page-actions">
+    {% if include_empty %}
+    <a href="{{ url_for('main.authorities_index') }}">Show only authorities with linked schools</a>
+    {% else %}
+    <a href="{{ url_for('main.authorities_index', show='all') }}">Show all authorities</a>
+    {% endif %}
+</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Code</th>
+            <th>Region</th>
+            <th>Schools</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for authority in authorities %}
+        <tr>
+            <td><a href="{{ url_for('main.authority_show', authority_id=authority.id) }}">{{ authority.name }}</a></td>
+            <td>{{ authority.code }}</td>
+            <td>{{ authority.region_label }}</td>
+            <td>{{ authority.school_count }}</td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="4">No authorities loaded yet.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

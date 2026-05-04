@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}{{ authority.name }} | UK Schools Explorer{% endblock %}
+
+{% block content %}
+<h2>{{ authority.name }}</h2>
+
+<section class="card">
+    <p><strong>Authority code:</strong> {{ authority.code }}</p>
+    <p><strong>Region:</strong> {{ authority.region_label }}</p>
+    <p><strong>Combined authority:</strong> {{ authority.combined_authority_name or "Unknown" }}</p>
+    <p><strong>Authority type:</strong> {{ authority.local_authority_type or "Unknown" }}</p>
+    <p><strong>Website:</strong>
+        {% if authority.website %}
+        <a href="{{ authority.website }}">{{ authority.website }}</a>
+        {% else %}
+        Unknown
+        {% endif %}
+    </p>
+    <p><strong>Schools in authority:</strong> {{ summary.school_count }}</p>
+</section>
+
+<section class="lists-grid">
+    <article class="card">
+        <h3>Schools by type</h3>
+        <ul>
+            {% for school_type, count in summary.type_counts %}
+            <li>{{ school_type }}: {{ count }}</li>
+            {% else %}
+            <li>No type data available.</li>
+            {% endfor %}
+        </ul>
+    </article>
+    <article class="card">
+        <h3>Schools by status</h3>
+        <ul>
+            {% for status, count in summary.status_counts %}
+            <li>{{ status }}: {{ count }}</li>
+            {% else %}
+            <li>No status data available.</li>
+            {% endfor %}
+        </ul>
+    </article>
+</section>
+
+<section class="card">
+    <h3>Linked schools</h3>
+    <ul>
+        {% for school in authority.schools %}
+        <li><a href="{{ url_for('main.school_show', school_id=school.id) }}">{{ school.name }}</a></li>
+        {% else %}
+        <li>No schools linked yet.</li>
+        {% endfor %}
+    </ul>
+</section>
+{% endblock %}

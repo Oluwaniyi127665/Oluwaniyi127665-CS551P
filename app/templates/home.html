@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Home | UK Schools Explorer{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <h2>Explore open data about schools and local authorities</h2>
+    <p>This Flask application uses open public data to compare schools and place each school in context with its local authority.</p>
+</section>
+
+<section class="stats-grid">
+    <article class="card">
+        <h3>Total schools</h3>
+        <p>{{ stats.school_count }}</p>
+    </article>
+    <article class="card">
+        <h3>Total authorities</h3>
+        <p>{{ stats.authority_count }}</p>
+    </article>
+</section>
+
+<section class="lists-grid">
+    <article class="card">
+        <h3>Most common school types</h3>
+        <ul>
+            {% for school_type, count in stats.top_types %}
+            <li>{{ school_type }}: {{ count }}</li>
+            {% else %}
+            <li>No data loaded yet.</li>
+            {% endfor %}
+        </ul>
+    </article>
+    <article class="card">
+        <h3>Schools by status</h3>
+        <ul>
+            {% for status, count in stats.top_statuses %}
+            <li>{{ status }}: {{ count }}</li>
+            {% else %}
+            <li>No data loaded yet.</li>
+            {% endfor %}
+        </ul>
+    </article>
+</section>
+
+<section class="card">
+    <h3>Largest authorities in the current subset</h3>
+    <ul>
+        {% for authority_name, count in stats.largest_authorities %}
+        <li>{{ authority_name }}: {{ count }} schools</li>
+        {% else %}
+        <li>No data loaded yet.</li>
+        {% endfor %}
+    </ul>
+</section>
+{% endblock %}
